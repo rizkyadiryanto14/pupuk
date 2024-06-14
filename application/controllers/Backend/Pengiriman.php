@@ -100,4 +100,10 @@ class Pengiriman extends  CI_Controller
 	}
 
 
+	public function insert_coba()
+	{
+		
+	}
+
+
 }
