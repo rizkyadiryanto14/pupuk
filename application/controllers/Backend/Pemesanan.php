@@ -81,7 +81,7 @@ class Pemesanan extends CI_Controller
 				$sub_array[] = $row->nama_pupuk;
 				$sub_array[] = $row->jumlah;
 				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
-				$sub_array[] = '<button class="btn btn-info btn-xs bayar-sekarang" data-id-pesanan="' . $row->id_pesanan . '">Bayar Sekarang</button>';
+				$sub_array[] = '<button class="btn btn-danger btn-xs bayar-sekarang" data-id-pesanan="' . $row->id_pesanan . '">Bayar Sekarang</button>';
 				$sub_array[] = '<a href="' . site_url('belanja/update_view/' . $row->id_pesanan) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
                      <a href="' . site_url('pemesanan/delete/' . $row->id_pesanan) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
