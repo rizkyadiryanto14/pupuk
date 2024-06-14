@@ -20,6 +20,7 @@
 
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
+			<?php if ($this->session->userdata('role') == 'admin') { ?>
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<li class="nav-item">
 					<a href="<?= base_url('dashboard') ?>" class="nav-link">
@@ -70,6 +71,42 @@
 					</a>
 				</li>
 			</ul>
+			<?php }elseif ($this->session->userdata('role') == 'user'){ ?>
+				<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+					<li class="nav-item">
+						<a href="<?= base_url('dashboard') ?>" class="nav-link">
+							<i class="nav-icon fas fa-tachometer-alt"></i>
+							<p>
+								Dashboard
+							</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('pupuk') ?>" class="nav-link">
+							<i class="nav-icon fas fa-globe"></i>
+							<p>
+								Pupuk
+							</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('pengiriman') ?>" class="nav-link">
+							<i class="nav-icon fas fa-car-alt"></i>
+							<p>
+								Penyaluran
+							</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="<?= base_url('pemesanan') ?>" class="nav-link">
+							<i class="nav-icon fas fa-money-bill"></i>
+							<p>
+								Pemesanan
+							</p>
+						</a>
+					</li>
+				</ul>
+			<?php } ?>
 		</nav>
 		<!-- /.sidebar-menu -->
 	</div>

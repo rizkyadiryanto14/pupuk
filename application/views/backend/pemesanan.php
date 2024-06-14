@@ -25,24 +25,53 @@
 	<!-- /.content-header -->
 	<div class="content">
 		<div class="container-fluid">
-			<div class="card">
-				<div class="card-header">
-					<button class="btn btn-primary" data-toggle="modal" data-target="#tambahpemesanan">Tambah Pesanan</button>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<button class="btn btn-primary" data-toggle="modal" data-target="#tambahpemesanan">Tambah Pesanan</button>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table id="pemesanan" class="table table-striped">
+									<thead>
+									<tr>
+										<th>No</th>
+										<th>Pupuk</th>
+										<th>Jumlah</th>
+										<th>Harga</th>
+										<th>Pembayaran</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table id="pemesanan" class="table table-striped">
-							<thead>
-							<tr>
-								<th>No</th>
-								<th>Pupuk</th>
-								<th>Jumlah</th>
-								<th>Harga</th>
-								<th>Pembayaran</th>
-								<th>Action</th>
-							</tr>
-							</thead>
-						</table>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<?php if ($this->session->userdata('role') == 'admin') { ?>
+								<button class="btn btn-primary" data-toggle="modal" data-target="#tambahpemesanan">Tambah Pesanan</button>
+							<?php } ?>
+							<h3 class="card-title">Riwayat Pemesanan</h3>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table id="pemesanan" class="table table-striped">
+									<thead>
+									<tr>
+										<th>No</th>
+										<th>Pupuk</th>
+										<th>Jumlah</th>
+										<th>Harga</th>
+										<th>Pembayaran</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
