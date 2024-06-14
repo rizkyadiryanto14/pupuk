@@ -39,6 +39,7 @@ $route['pengiriman/get_data_pengiriman'] 	= 'Backend/Pengiriman/get_data_pengiri
 
 //subsidi
 $route['subsidi']					= 'Backend/Subsidi';
+$route['subsidi/insert']			= 'Backend/Subsidi/insert';
 
 
 //users
