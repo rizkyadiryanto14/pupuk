@@ -1,7 +1,5 @@
 <?php $this->load->view('templates/header') ?>
-
 <?php $this->load->view('templates/navbar') ?>
-
 <?php $this->load->view('templates/sidebar') ?>
 
 	<!-- Content Wrapper. Contains page content -->
@@ -31,7 +29,7 @@
 						<!-- small box -->
 						<div class="small-box bg-info">
 							<div class="inner">
-								<h3>10</h3>
+								<h3><?= $pemesanan ?></h3>
 								<p>Pemesanan</p>
 							</div>
 							<div class="icon">
@@ -45,8 +43,7 @@
 						<!-- small box -->
 						<div class="small-box bg-success">
 							<div class="inner">
-								<h3>53</h3>
-
+								<h3><?= $pengirim ?></h3>
 								<p>Pengiriman</p>
 							</div>
 							<div class="icon">
@@ -61,9 +58,8 @@
 						<!-- small box -->
 						<div class="small-box bg-warning">
 							<div class="inner">
-								<h3>10</h3>
-
-								<p>User</p>
+								<h3><?= $penduduk ?></h3>
+								<p>Penduduk</p>
 							</div>
 							<div class="icon">
 								<i class="ion ion-person-add"></i>
@@ -78,8 +74,7 @@
 						<!-- small box -->
 						<div class="small-box bg-danger">
 							<div class="inner">
-								<h3>65</h3>
-
+								<h3><?= $pupuk ?></h3>
 								<p>Pupuk</p>
 							</div>
 							<div class="icon">
@@ -95,5 +90,4 @@
 		</div>
 	</div>
 	<!-- /.content-wrapper -->
-
 <?php $this->load->view('templates/footer') ?>

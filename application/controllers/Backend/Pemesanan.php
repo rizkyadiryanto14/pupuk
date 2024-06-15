@@ -9,6 +9,7 @@
  * @property $Subsidi_model
  * @property $config
  */
+
 class Pemesanan extends CI_Controller
 {
 	public function __construct()
@@ -23,10 +24,10 @@ class Pemesanan extends CI_Controller
 		$this->load->config('midtrans');
 
 		// Set Midtrans configuration
-		\Midtrans\Config::$serverKey = $this->config->item('midtrans')['server_key'];
+		\Midtrans\Config::$serverKey 	= $this->config->item('midtrans')['server_key'];
 		\Midtrans\Config::$isProduction = $this->config->item('midtrans')['is_production'];
-		\Midtrans\Config::$isSanitized = $this->config->item('midtrans')['is_sanitized'];
-		\Midtrans\Config::$is3ds = $this->config->item('midtrans')['is_3ds'];
+		\Midtrans\Config::$isSanitized 	= $this->config->item('midtrans')['is_sanitized'];
+		\Midtrans\Config::$is3ds 		= $this->config->item('midtrans')['is_3ds'];
 	}
 
 	public function index(): void
@@ -40,10 +41,10 @@ class Pemesanan extends CI_Controller
 	public function insert(): void
 	{
 		$data = [
-			'id_users'        => $this->input->post("id_users"),
-			'id_pupuk'        => $this->input->post("id_pupuk"),
-			'jumlah'        => $this->input->post("jumlah"),
-			'timestamp'        => date('Y-m-d H:i:s')
+			'id_users'        	=> $this->input->post("id_users"),
+			'id_pupuk'        	=> $this->input->post("id_pupuk"),
+			'jumlah'        	=> $this->input->post("jumlah"),
+			'timestamp'        	=> date('Y-m-d H:i:s')
 		];
 
 		$insert_pemesanan = $this->Pemesanan_model->insert_pemesanan($data);
@@ -86,10 +87,10 @@ class Pemesanan extends CI_Controller
 	public function update_pemesanan($id_pemesanan): void
 	{
 		$data = [
-			'id_users'        => $this->input->post("id_users"),
-			'id_pupuk'        => $this->input->post("id_pupuk"),
-			'jumlah'        => $this->input->post("jumlah"),
-			'timestamp'        => date('Y-m-d H:i:s')
+			'id_users'        	=> $this->input->post("id_users"),
+			'id_pupuk'        	=> $this->input->post("id_pupuk"),
+			'jumlah'        	=> $this->input->post("jumlah"),
+			'timestamp'        	=> date('Y-m-d H:i:s')
 		];
 
 		$update_pemesanan = $this->Pemesanan_model->update_pemesanan($id_pemesanan,$data);
@@ -165,19 +166,19 @@ class Pemesanan extends CI_Controller
 
 		// Siapkan parameter transaksi Midtrans
 		$transaction_details = array(
-			'order_id' => $id_pesanan,
-			'gross_amount' => $pesanan['harga_pupuk'] * $pesanan['jumlah'],
+			'order_id' 		=> $id_pesanan,
+			'gross_amount' 	=> $pesanan['harga_pupuk'] * $pesanan['jumlah'],
 		);
 
 		$customer_details = array(
-			'first_name' => $pesanan['nama'],
-			'email' => 'emailcontoh@gmail.com',
-			'phone' => '085333411680',
+			'first_name' 	=> $pesanan['nama'],
+			'email' 		=> 'emailcontoh@gmail.com',
+			'phone' 		=> '085333411680',
 		);
 
 		$params = array(
-			'transaction_details' => $transaction_details,
-			'customer_details' => $customer_details,
+			'transaction_details' 	=> $transaction_details,
+			'customer_details' 		=> $customer_details,
 		);
 
 		// Dapatkan Snap Token

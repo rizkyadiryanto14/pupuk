@@ -26,4 +26,11 @@ class Subsidi_model extends CI_Model
 		$this->db->where('id_subsidi', $id_subsidi);
 		return $this->db->delete('subsidi');
 	}
+
+	function get_all_data()
+	{
+		$this->db->select("*");
+		$this->db->from("penduduk");
+		return $this->db->count_all_results();
+	}
 }
