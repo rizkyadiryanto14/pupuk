@@ -43,6 +43,7 @@
 									<th>Tanggal Lahir</th>
 									<th>Kode Kios</th>
 									<th>Nama Kios</th>
+									<th>Action</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -58,6 +59,10 @@
 											<td><?= $item->tanggal_lahir?></td>
 											<td><?= $item->kode_kios?></td>
 											<td><?= $item->nama_kios?></td>
+											<td>
+												<button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
+												<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+											</td>
 										</tr>
 									<?php } ?>
 								</tbody>

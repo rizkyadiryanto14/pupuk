@@ -31,6 +31,13 @@ class Pupuk extends  CI_Controller
 		$this->load->view('backend/detail_pupuk', $data_array);
 	}
 
+	public function update_view($id_pupuk)
+	{
+		$data_pupuk = [
+			'data_pupuk'
+		];
+	}
+
 	public function insert(): void
 	{
 		$post = $this->input->post();
@@ -59,7 +66,7 @@ class Pupuk extends  CI_Controller
 				$sub_array[] = $row->jenis_pupuk;
 				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
 				$sub_array[] = $row->status_pupuk;
-				$sub_array[] = '<a href="' . site_url('belanja/update_view/' . $row->id_pupuk) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
+				$sub_array[] = '<a href="' . site_url('pupuk/update_view/' . $row->id_pupuk) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
                      <a href="' . site_url('Belanja/delete/' . $row->id_pupuk) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
 			}

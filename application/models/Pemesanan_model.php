@@ -33,7 +33,7 @@ class Pemesanan_model extends  CI_Model
 
 	public function get_id_pemesanan($id_pemesanan)
 	{
-		return $this->db->get_where('pesanan', array('id_pesanan' => $id_pemesanan))->result();
+		return $this->db->get_where('pesanan', array('id_pesanan' => $id_pemesanan))->row_array();
 	}
 
 	public function update_pemesanan($id_pemesanan, $data)

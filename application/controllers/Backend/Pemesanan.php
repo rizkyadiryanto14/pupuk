@@ -5,6 +5,8 @@
  * @property $Pemesanan_model
  * @property $session
  * @property $Users_model
+ * @property $Pupuk_model
+ * @property $Subsidi_model
  * @property $config
  */
 class Pemesanan extends CI_Controller
@@ -14,6 +16,8 @@ class Pemesanan extends CI_Controller
 		parent::__construct();
 		$this->load->model('Pemesanan_model');
 		$this->load->model('Users_model');
+		$this->load->model('Subsidi_model');
+		$this->load->model('Pupuk_model');
 
 		// Load Midtrans configuration
 		$this->load->config('midtrans');
@@ -64,9 +68,38 @@ class Pemesanan extends CI_Controller
 		echo json_encode($data);
 	}
 
-	public function update_pemesanan($id_pemesanan)
+	public function update_view($id_pemesanan): void
 	{
-		// Implementasi update pesanan jika diperlukan
+		$data_pemesanan = [
+			'data_pemesanan'	=> $this->Pemesanan_model->get_id_pemesanan($id_pemesanan),
+			'data_users'		=> $this->Subsidi_model->get_all_subsidi(),
+			'data_pupuk'		=> $this->Pupuk_model->get_all_pupuk()
+		];
+		$this->load->view('backend/update_pemesanan', $data_pemesanan);
+	}
+
+	/**
+	 * @param $id_pemesanan
+	 * @return void
+	 */
+
+	public function update_pemesanan($id_pemesanan): void
+	{
+		$data = [
+			'id_users'        => $this->input->post("id_users"),
+			'id_pupuk'        => $this->input->post("id_pupuk"),
+			'jumlah'        => $this->input->post("jumlah"),
+			'timestamp'        => date('Y-m-d H:i:s')
+		];
+
+		$update_pemesanan = $this->Pemesanan_model->update_pemesanan($id_pemesanan,$data);
+
+		if($update_pemesanan){
+			$this->session->set_flashdata('sukses', 'Data Pemesanan Berhasil Ditambahkan');
+		}else {
+			$this->session->set_flashdata('gagal', 'Data Pemesanan Gagal Ditambahkan');
+		}
+		redirect(base_url('pemesanan'));
 	}
 
 	public function get_data_pemesanan(): void
@@ -82,7 +115,7 @@ class Pemesanan extends CI_Controller
 				$sub_array[] = $row->jumlah;
 				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
 				$sub_array[] = '<button class="btn btn-danger btn-xs bayar-sekarang" data-id-pesanan="' . $row->id_pesanan . '">Bayar Sekarang</button>';
-				$sub_array[] = '<a href="' . site_url('belanja/update_view/' . $row->id_pesanan) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
+				$sub_array[] = '<a href="' . site_url('pemesanan/update_view/' . $row->id_pesanan) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
                      <a href="' . site_url('pemesanan/delete/' . $row->id_pesanan) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
 			}

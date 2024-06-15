@@ -61,10 +61,6 @@ class Pengiriman extends  CI_Controller
 	 * @return void
 	 */
 
-	/**
-	 * @return void
-	 */
-
 	public function update_pengiriman(): void
 	{
 		$post = $this->input->post();

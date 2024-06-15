@@ -26,7 +26,7 @@
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
 							<button class="btn btn-primary" data-toggle="modal" data-target="#tambahpemesanan">Tambah Pesanan</button>
@@ -49,7 +49,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
 							<h3 class="card-title">Riwayat Pemesanan</h3>
@@ -105,8 +105,8 @@
 		</div>
 	</div>
 </div>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<!-- Masukkan DataTables JS di sini -->
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-vvzWW7LzPfbN5mmy"></script>

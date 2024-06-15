@@ -28,6 +28,7 @@ $route['pemesanan/get_data_pemesanan'] 	= 'Backend/Pemesanan/get_data_pemesanan'
 $route['pemesanan/api_users']			= 'Backend/Pemesanan/listing_users';
 $route['pemesanan/api_pupuk']			= 'Backend/Pemesanan/listing_pupuk';
 $route['pemesanan/get_snap_token']		= 'Backend/Pemesanan/get_snap_token';
+$route['pemesanan/update_view/(:num)']	= 'Backend/Pemesanan/update_view/$1';
 
 
 //pengiriman

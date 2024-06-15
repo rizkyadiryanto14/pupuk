@@ -5,7 +5,6 @@
 		<img src="<?= base_url() ?>assets/images/logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 		<span class="brand-text font-weight-light">UD WAHYU</span>
 	</a>
-
 	<!-- Sidebar -->
 	<div class="sidebar">
 		<!-- Sidebar user panel (optional) -->
@@ -17,7 +16,6 @@
 				<a href="#" class="d-block"><?=$this->session->userdata('nama') ?></a>
 			</div>
 		</div>
-
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
 			<?php if ($this->session->userdata('role') == 'admin') { ?>
@@ -59,14 +57,6 @@
 						<i class="nav-icon fas fa-money-bill"></i>
 						<p>
 							Subsidi
-						</p>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="<?= base_url('users') ?>" class="nav-link">
-						<i class="nav-icon fas fa-people-carry"></i>
-						<p>
-							Users
 						</p>
 					</a>
 				</li>
