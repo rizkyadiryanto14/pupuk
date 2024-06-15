@@ -58,8 +58,8 @@
 								</div>
 							</div>
 							<div class="card-footer">
-								<a href="<?= base_url('pemesanan') ?>" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
-								<button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Update</button>
+								<a href="<?= base_url('pemesanan') ?>" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Kembali</a>
+								<button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Update</button>
 							</div>
 						</form>
 					</div>

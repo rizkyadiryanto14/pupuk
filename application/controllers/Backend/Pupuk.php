@@ -31,11 +31,32 @@ class Pupuk extends  CI_Controller
 		$this->load->view('backend/detail_pupuk', $data_array);
 	}
 
-	public function update_view($id_pupuk)
+	/**
+	 * @param $id_pupuk
+	 * @return void
+	 */
+	public function update_view($id_pupuk): void
 	{
 		$data_pupuk = [
-			'data_pupuk'
+			'data_pupuk' => $this->Pupuk_model->get_id_pupuk($id_pupuk)
 		];
+		$this->load->view('backend/update_pupukview', $data_pupuk);
+	}
+
+	/**
+	 * @param $id_pupuk
+	 * @return void
+	 */
+	public function delete($id_pupuk): void
+	{
+		$delete = $this->Pupuk_model->delete_pupuk($id_pupuk);
+
+		if ($delete){
+			$this->session->set_flashdata('sukses', 'Data Pupuk Berhasil Dihapus');
+		}else {
+			$this->session->set_flashdata('gagal', 'Data Pupuk Gagal Dihapus');
+		}
+		redirect(base_url('pupuk'));
 	}
 
 	public function insert(): void
@@ -67,7 +88,7 @@ class Pupuk extends  CI_Controller
 				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
 				$sub_array[] = $row->status_pupuk;
 				$sub_array[] = '<a href="' . site_url('pupuk/update_view/' . $row->id_pupuk) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
-                     <a href="' . site_url('Belanja/delete/' . $row->id_pupuk) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
+                     <a href="' . site_url('pupuk/delete/' . $row->id_pupuk) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
 			}
 

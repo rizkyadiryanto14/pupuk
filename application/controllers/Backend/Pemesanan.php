@@ -46,7 +46,6 @@ class Pemesanan extends CI_Controller
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
 		];
-
 		$insert_pemesanan = $this->Pemesanan_model->insert_pemesanan($data);
 
 		if($insert_pemesanan){
@@ -202,6 +201,7 @@ class Pemesanan extends CI_Controller
 	/**
 	 * @return void
 	 */
+
 	public function finish(): void
 	{
 		$result = json_decode($this->input->post('result_data'));

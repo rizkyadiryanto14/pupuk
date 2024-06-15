@@ -18,6 +18,7 @@ $route['pupuk/update']					= 'Backend/Pupuk/update';
 $route['pupuk/detail_update/(:num)']	= 'Backend/Pupuk/detail_view/$1';
 $route['pupuk/delete/(:num)']			= 'Backend/Pupuk/delete';
 $route['pupuk/get_data_pupuk']			= 'Backend/Pupuk/get_data_pupuk';
+$route['pupuk/update_view/(:num)']		= 'Backend/Pupuk/update_view/$1';
 
 //pemesanan
 $route['pemesanan']						= 'Backend/Pemesanan';
