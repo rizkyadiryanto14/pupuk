@@ -86,8 +86,8 @@
 			<div class="modal-body">
 				<form action="<?= base_url('pemesanan/insert') ?>" method="post">
 					<div class="form-group">
-						<label for="id_users">Users</label>
-						<select name="id_users" id="id_users" class="form-control">
+						<label for="id_penduduk">Users</label>
+						<select name="id_penduduk" id="id_penduduk" class="form-control">
 							<option selected disabled>-- Pilih Users --</option>
 						</select>
 					</div>
@@ -201,7 +201,7 @@
 				method: 'GET',
 				dataType: 'json',
 				success: function(response) {
-					var $selectUsers = $('#id_users');
+					var $selectUsers = $('#id_penduduk');
 					response.forEach(function(users) {
 						var $option = $('<option>', {
 							value: users.id_penduduk,
