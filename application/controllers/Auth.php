@@ -18,11 +18,18 @@ class Auth extends CI_Controller
 		$this->load->view('auth/login');
 	}
 
+	/**
+	 * @return void
+	 */
+	public function registrasi():void
+	{
+		$this->load->view('auth/registrasi');
+	}
+
 	public function logic_login(): void
 	{
 		$post = $this->input->post();
-
-		$data_user = $this->Auth_model->get_email_user($post['email']);
+		$data_user = $this->Auth_model->get_username_user($post['username']);
 
 		if ($data_user){
 			if (password_verify($post['password'], $data_user['password'])){

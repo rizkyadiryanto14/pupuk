@@ -29,10 +29,12 @@
 				<div class="card">
 					<div class="card-header">
 						<button class="btn btn-primary" data-toggle="modal" data-target="#tambahsubsidi">Tambah Data</button>
+						<button class="btn btn-success" data-toggle="modal" data-target="#importsubsidi">Import Excel</button>
+						<a href="<?= base_url('subsidi/downloadtemplate') ?>" class="btn btn-warning">Download Template</a>
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered">
+							<table id="subsidi" class="table table-bordered">
 								<thead>
 								<tr>
 									<th>No</th>
@@ -46,26 +48,6 @@
 									<th>Action</th>
 								</tr>
 								</thead>
-								<tbody>
-									<?php
-									$no = 1;
-									foreach ($data_subsidi as $item) { ?>
-										<tr>
-											<td><?= $no++ ?></td>
-											<td><?= $item->nama ?></td>
-											<td><?= $item->nik?></td>
-											<td><?= $item->alamat?></td>
-											<td><?= $item->tempat?></td>
-											<td><?= $item->tanggal_lahir?></td>
-											<td><?= $item->kode_kios?></td>
-											<td><?= $item->nama_kios?></td>
-											<td>
-												<button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-												<button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-											</td>
-										</tr>
-									<?php } ?>
-								</tbody>
 							</table>
 						</div>
 					</div>
@@ -73,6 +55,28 @@
 			</div>
 		</div>
 	</section>
+</div>
+
+<div class="modal fade" id="importsubsidi">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Import Excel</h3>
+			</div>
+			<form action="<?= base_url('subsidi/import') ?>" method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="file_import">File Import</label>
+						<input type="file" name="file_import" id="file_import" class="form-control">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-warning" data-dismiss="modal">Close</button>
+					<button class="btn btn-success" type="submit">Import</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" id="tambahsubsidi">
@@ -122,6 +126,27 @@
 		</div>
 	</div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Masukkan DataTables JS di sini -->
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script>
+	$(document).ready(function () {
+		var dataTable = $('#subsidi').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"order": [],
+			"ajax": {
+				url: "<?php echo base_url('subsidi/get_data_subsidi'); ?>",
+				type: "POST"
+			},
+			"columnDefs": [{
+				"targets": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+				"orderable": false,
+			}],
+		});
+	});
+</script>
 
 <?php $this->load->view('templates/footer') ?>
 

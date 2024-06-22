@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'Auth';
+$route['default_controller'] = 'Home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //auth
 
 $route['login']			= 'Auth/logic_login';
+$route['registrasi']	= 'Auth/registrasi';
 $route['logout']		= 'Auth/logout';
 $route['dashboard']		= 'Backend/Dashboard';
 
@@ -40,9 +41,25 @@ $route['pengiriman/delete/(:num)']			= 'Backend/Pengiriman/delete/$1';
 $route['pengiriman/get_data_pengiriman'] 	= 'Backend/Pengiriman/get_data_pengiriman';
 
 //subsidi
-$route['subsidi']					= 'Backend/Subsidi';
-$route['subsidi/insert']			= 'Backend/Subsidi/insert';
+$route['subsidi']							= 'Backend/Subsidi';
+$route['subsidi/insert']					= 'Backend/Subsidi/insert';
+$route['subsidi/get_data_subsidi']			= 'Backend/Subsidi/get_data_subsidi';
+$route['subsidi/daftar_penerima_subsidi'] 	= 'Backend/Subsidi/daftar_penerima_subsidi';
 
+$route['home/get_data_subsidi']				= 'Backend/Subsidi/get_data_subsidi';
+
+
+$route['usaha_dagang']						= 'Backend/Usaha_dagang';
+$route['usaha_dagang/get_data_usahadagang'] = 'Backend/Usaha_dagang/get_data_usahadagang';
+$route['usaha_dagang/insert']				= 'Backend/Usaha_dagang/insert';
+$route['usaha_dagang/update_view/(:num)']	= 'Backend/Usaha_dagang/update_view/$1';
+$route['usaha_dagang/update_logic/(:num)']	= 'Backend/Usaha_dagang/update_logic/$1';
+$route['usaha_dagang/delete/(:num)']		= 'Backend/Usaha_dagang/delete/$1';
 
 //users
-$route['users']						= 'Backend/Users';
+$route['users']								= 'Backend/Users';
+$route['users/get_data_users']				= 'Backend/Users/get_data_users';
+$route['users/update_view/(:num)']			= 'Backend/Users/update_view/$1';
+$route['users/update_logic/(:num)']			= 'Backend/Users/update_logic/$1';
+$route['users/delete/(:num)']				= 'Backend/Users/delete/$1';
+$route['users/ceknik']						= 'Backend/Users/ceknik';

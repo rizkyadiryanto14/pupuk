@@ -20,7 +20,7 @@
 									<i class="fa fa-user"></i>
 								</span>
 						</div>
-						<input type="text" name="email" class="form-control" placeholder="Email" required>
+						<input type="text" name="username" class="form-control" placeholder="Username" required>
 					</div>
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
@@ -37,6 +37,13 @@
 						</button>
 					</div>
 				</form>
+				<div class="input-group mb-3">
+					<button class="btn btn-block btn-warning" data-toggle="modal" data-target="#ceknik">
+						CEK NIK
+						<i class="fa fa-arrow-alt-circle-right"></i>
+					</button>
+				</div>
+				<a href="<?= base_url('home') ?>"><i class="fas fa-arrow-left"></i> Kembali Ke Home</a>
 			</div>
 		</div>
 
@@ -50,6 +57,26 @@
                         </p>
                     </span>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="ceknik">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Cek Nik</h3>
+			</div>
+			<form action="<?= base_url('users/ceknik') ?>" method="post">
+				<div class="modal-body">
+					<label for="nik">Masukan NIK</label>
+					<input type="text" name="nik" id="nik" class="form-control">
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-warning" data-dismiss="modal">Close</button>
+					<button class="btn btn-success" type="submit">Cek NIK</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

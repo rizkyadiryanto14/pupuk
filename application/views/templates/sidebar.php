@@ -54,9 +54,25 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?= base_url('subsidi') ?>" class="nav-link">
-						<i class="nav-icon fas fa-money-bill"></i>
+						<i class="nav-icon fas fa-car"></i>
 						<p>
 							Subsidi
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?= base_url('usaha_dagang') ?>" class="nav-link">
+						<i class="nav-icon fas fa-marker"></i>
+						<p>
+							Usaha Dagang
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?= base_url('users') ?>" class="nav-link">
+						<i class="nav-icon fas fa-user"></i>
+						<p>
+							Users
 						</p>
 					</a>
 				</li>
