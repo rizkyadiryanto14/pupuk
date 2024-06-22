@@ -89,7 +89,8 @@
 						<label for="id_users">Users</label>
 						<select name="id_users" id="id_users" class="form-control">
 							<option selected disabled>-- Pilih Users --</option>
-						</select>						</div>
+						</select>
+					</div>
 					<div class="form-group">
 						<label for="id_pupuk">Pupuk</label>
 						<select name="id_pupuk" id="id_pupuk" class="form-control">
@@ -203,7 +204,7 @@
 					var $selectUsers = $('#id_users');
 					response.forEach(function(users) {
 						var $option = $('<option>', {
-							value: users.id_users,
+							value: users.id_penduduk,
 							text: users.nama
 						});
 						$selectUsers.append($option);

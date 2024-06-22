@@ -63,6 +63,9 @@
 					<label for="id_pesanan">Pesanan</label>
 					<select name="id_pesanan" id="id_pesanan" class="form-control">
 						<option selected disabled>Pilih Pesanan</option>
+						<?php foreach ($pemesanan as $item) { ?>
+							<option value="<?= $item->id_pesanan ?>"><?= $item->id_users ?></option>
+						<?php } ?>
 					</select>
 				</div>
 				<div class="form-group">

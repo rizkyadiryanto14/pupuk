@@ -10,6 +10,11 @@ class Subsidi_model extends CI_Model
 		return $this->db->get('penduduk')->result();
 	}
 
+	public function get_subsidi()
+	{
+		return $this->db->get('penduduk')->result_array();
+	}
+
 	public function insert_subsidi($data)
 	{
 		return $this->db->insert('penduduk', $data);

@@ -40,7 +40,7 @@
 					<a href="<?= base_url('pengiriman') ?>" class="nav-link">
 						<i class="nav-icon fas fa-car-alt"></i>
 						<p>
-							Pengiriman
+							Penyaluran
 						</p>
 					</a>
 				</li>

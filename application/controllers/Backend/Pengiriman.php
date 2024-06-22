@@ -22,7 +22,10 @@ class Pengiriman extends  CI_Controller
 
 	public function index(): void
 	{
-		$this->load->view('backend/pengiriman');
+		$data = [
+			'pemesanan'		=> $this->Pemesanan_model->get_all_pemesanan(),
+		];
+		$this->load->view('backend/pengiriman', $data);
 	}
 
 	/**
@@ -82,7 +85,6 @@ class Pengiriman extends  CI_Controller
                      <a href="' . site_url('Belanja/delete/' . $row->id_pengiriman) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
 			}
-
 			$output = array(
 				"draw" => isset($_POST["draw"]) ? intval($_POST["draw"]) : 0, // Periksa apakah 'draw' ada
 				"recordsTotal" => $this->Pengiriman_model->get_all_data(),
@@ -94,12 +96,4 @@ class Pengiriman extends  CI_Controller
 			echo "Error: Fetch data is not an array.";
 		}
 	}
-
-
-	public function insert_coba()
-	{
-		
-	}
-
-
 }

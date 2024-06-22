@@ -11,11 +11,26 @@ class Pemesanan_model extends  CI_Model
 		return $this->db->get('pesanan')->result();
 	}
 
+
+
+	/**
+	 * @return void
+	 */
+
+	public function get_all_join_pemesanan(): void
+	{
+		$this->db->select('*');
+		$this->db->from('pemesanan');
+		$this->db->join('pupuk', 'pemesanan.id_pupuk=pupuk.id_pupuk', 'left');
+		$this->db->join('penduduk', 'pemesanan.id_penduduk=penduduk.id_penduduk', 'left');
+		$this->db->get()->result();
+	}
+
 	public function get_by_id($id_pesanan)
 	{
 		$this->db->select('*');
 		$this->db->from('pesanan');
-		$this->db->join('users', 'pesanan.id_users=users.id_users', 'left');
+		$this->db->join('penduduk', 'pesanan.id_penduduk=penduduk.id_penduduk', 'left');
 		$this->db->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk');
 		$this->db->where('pesanan.id_pesanan', $id_pesanan);
 		return $this->db->get()->row_array();
@@ -50,10 +65,10 @@ class Pemesanan_model extends  CI_Model
 
 	function make_query(): void
 	{
-		$this->db->select('pesanan.*, pupuk.nama_pupuk, users.nama as nama_user, pupuk.harga_pupuk')
+		$this->db->select('pesanan.*, pupuk.nama_pupuk, penduduk.nama as nama_penduduk, pupuk.harga_pupuk')
 			->from("pesanan")
 			->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk')
-			->join('users', 'pesanan.id_users=users.id_users');
+			->join('penduduk', 'pesanan.id_penduduk=penduduk.id_penduduk');
 		if (isset($_POST["search"]["value"])) {
 			$this->db->like("jumlah", $_POST["search"]["value"]);
 		}

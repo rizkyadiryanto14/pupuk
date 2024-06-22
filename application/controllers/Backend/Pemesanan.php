@@ -41,7 +41,7 @@ class Pemesanan extends CI_Controller
 	public function insert(): void
 	{
 		$data = [
-			'id_users'        	=> $this->input->post("id_users"),
+			'id_penduduk'       => $this->input->post("id_penduduk"),
 			'id_pupuk'        	=> $this->input->post("id_pupuk"),
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
@@ -58,7 +58,7 @@ class Pemesanan extends CI_Controller
 
 	public function listing_users(): void
 	{
-		$data = $this->Users_model->get_all_users();
+		$data = $this->Subsidi_model->get_subsidi();
 		echo json_encode($data);
 	}
 
@@ -86,14 +86,13 @@ class Pemesanan extends CI_Controller
 	public function update_pemesanan($id_pemesanan): void
 	{
 		$data = [
-			'id_users'        	=> $this->input->post("id_users"),
+			'id_penduduk'        	=> $this->input->post("id_penduduk"),
 			'id_pupuk'        	=> $this->input->post("id_pupuk"),
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
 		];
 
 		$update_pemesanan = $this->Pemesanan_model->update_pemesanan($id_pemesanan,$data);
-
 		if($update_pemesanan){
 			$this->session->set_flashdata('sukses', 'Data Pemesanan Berhasil Ditambahkan');
 		}else {
@@ -180,7 +179,6 @@ class Pemesanan extends CI_Controller
 			'customer_details' 		=> $customer_details,
 		);
 
-		// Dapatkan Snap Token
 		try {
 			$snapToken = \Midtrans\Snap::getSnapToken($params);
 
