@@ -25,10 +25,10 @@ class Usaha_dagang extends CI_Controller
 	/**
 	 * @return void
 	 */
+
 	public function insert():void
 	{
 		$post = $this->input->post();
-
 		$data_usaha = $this->Usaha_dagang_model->insert_usaha($post);
 
 		if ($data_usaha){
@@ -36,7 +36,6 @@ class Usaha_dagang extends CI_Controller
 		}else {
 			$this->session->set_flashdata('gagal', 'Data Usaha Dagang Gagal Ditambahkan');
 		}
-
 		redirect(base_url('usaha_dagang'));
 	}
 

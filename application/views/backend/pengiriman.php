@@ -63,7 +63,7 @@
 					<select name="id_pesanan" id="id_pesanan" class="form-control">
 						<option selected disabled>Pilih Pesanan</option>
 						<?php foreach ($pemesanan as $item) { ?>
-							<option value="<?= $item->id_pesanan ?>"><?= $item->id_users ?></option>
+							<option value="<?= $item->id_pesanan ?>"><?= $item->id_penduduk ?></option>
 						<?php } ?>
 					</select>
 				</div>
