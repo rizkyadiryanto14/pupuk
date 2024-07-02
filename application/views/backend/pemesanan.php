@@ -85,14 +85,17 @@
 			</div>
 			<div class="modal-body">
 				<form action="<?= base_url('pemesanan/insert') ?>" method="post">
+					<?php if($this->session->userdata('role') == 'admin') : ?>
 					<div class="form-group">
-						<label for="id_penduduk">Users</label>
-						<select name="id_penduduk" id="id_penduduk" class="form-control">
+						<label for="id_users">Users</label>
+						<select name="id_users" id="id_users" class="form-control">
 							<option selected disabled>-- Pilih Users --</option>
 						</select>
 					</div>
+					<?php endif;  ?>
 					<div class="form-group">
 						<label for="id_pupuk">Pupuk</label>
+						<input type="hidden" name="id_users" id="id_users" value="<?= $this->session->userdata('id_user') ?>">
 						<select name="id_pupuk" id="id_pupuk" class="form-control">
 							<option selected disabled>-- Pilih Pupuk --</option>
 						</select>					</div>
@@ -110,112 +113,186 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-vvzWW7LzPfbN5mmy"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<?php if ($this->session->flashdata('sukses')) : ?>
 	<script>
-		$(document).ready(function() {
-			$('#pemesanan').DataTable({
-				"processing": true,
-				"serverSide": true,
-				"ajax": {
-					"url": "<?= base_url('pemesanan/get_data_pemesanan') ?>",
-					"type": "POST"
-				},
-				"columns": [
-					{ "data": 0 },
-					{ "data": 1 },
-					{ "data": 2 },
-					{ "data": 3 },
-					{ "data": 4 },
-					{ "data": 5 }
-				]
-			});
-
-			$(document).ready(function() {
-				$(document).on('click', '.bayar-sekarang', function() {
-					var id_pesanan = $(this).data('id-pesanan');
-					console.log('Tombol "Bayar Sekarang" diklik, ID Pesanan:', id_pesanan);
-
-					$.ajax({
-						url: '<?= base_url('pemesanan/get_snap_token') ?>',
-						method: 'POST',
-						data: { id_pesanan: id_pesanan },
-						success: function(response) {
-							var data = JSON.parse(response);
-							console.log('Response dari server:', data);
-
-							if (data.success) {
-								console.log('Snap Token:', data.snap_token);
-								snap.pay(data.snap_token, {
-									onSuccess: function(result) {
-										console.log('Pembayaran berhasil:', result);
-										// Tambahkan logika setelah pembayaran berhasil
-									},
-									onPending: function(result) {
-										console.log('Pembayaran tertunda:', result);
-										// Tambahkan logika untuk pembayaran tertunda
-									},
-									onError: function(result) {
-										console.log('Pembayaran gagal:', result);
-										// Tambahkan logika untuk pembayaran gagal
-									},
-									onClose: function() {
-										console.log('Widget Snap ditutup');
-										// Tambahkan logika saat widget ditutup
-									}
-								});
-							} else {
-								alert(data.message);
-							}
-						},
-						error: function(xhr, status, error) {
-							console.error('Gagal memuat token pembayaran:', status, error);
-						}
-					});
-				});
-			});
-		});
-		$(document).ready(function() {
-			$.ajax({
-				url: "<?php echo base_url('pemesanan/api_pupuk') ?>",
-				method: 'GET',
-				dataType: 'json',
-				success: function(response) {
-					var $selectPupuk = $('#id_pupuk');
-					response.forEach(function(pupuk) {
-						var $option = $('<option>', {
-							value: pupuk.id_pupuk,
-							text: pupuk.nama_pupuk
-						});
-						$selectPupuk.append($option);
-					});
-				},
-				error: function(xhr, status, error) {
-					console.error('Gagal mengambil data kegiatan:', status, error);
-				}
-			});
-		});
-
-		$(document).ready(function() {
-			$.ajax({
-				url: "<?php echo base_url('pemesanan/api_users') ?>",
-				method: 'GET',
-				dataType: 'json',
-				success: function(response) {
-					var $selectUsers = $('#id_penduduk');
-					response.forEach(function(users) {
-						var $option = $('<option>', {
-							value: users.id_penduduk,
-							text: users.nama
-						});
-						$selectUsers.append($option);
-					});
-				},
-				error: function(xhr, status, error) {
-					console.error('Gagal mengambil data kegiatan:', status, error);
-				}
-			});
+		Swal.fire({
+			title: 'Succes!',
+			text: '<?php echo $this->session->flashdata('sukses'); ?>',
+			icon: 'success',
+			confirmButtonText: 'OK'
 		});
 	</script>
+<?php endif; ?>
+
+<?php if ($this->session->flashdata('gagal')) : ?>
+	<script>
+		Swal.fire({
+			title: 'Wrong !',
+			text: '<?php echo $this->session->flashdata('gagal'); ?>',
+			icon: 'error',
+			confirmButtonText: 'OK'
+		});
+	</script>
+<?php endif; ?>
+
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-vvzWW7LzPfbN5mmy"></script>
+<script>
+	$(document).ready(function() {
+		$('#pemesanan').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<?= base_url('pemesanan/get_data_pemesanan') ?>",
+				"type": "POST"
+			},
+			"columns": [
+				{ "data": 0 },
+				{ "data": 1 },
+				{ "data": 2 },
+				{ "data": 3 },
+				{ "data": 4 },
+				{ "data": 5 }
+			]
+		});
+
+		$(document).on('click', '.bayar-sekarang', function() {
+			var id_pesanan = $(this).data('id-pesanan');
+			console.log('Tombol "Bayar Sekarang" diklik, ID Pesanan:', id_pesanan);
+
+			$.ajax({
+				url: '<?= base_url('pemesanan/get_snap_token') ?>',
+				method: 'POST',
+				data: { id_pesanan: id_pesanan },
+				success: function(response) {
+					var data = JSON.parse(response);
+					console.log('Response dari server:', data);
+
+					if (data.success) {
+						console.log('Snap Token:', data.snap_token);
+						snap.pay(data.snap_token, {
+							onSuccess: function(result) {
+								console.log('Pembayaran berhasil:', result);
+								$.post('<?= base_url('pemesanan/midtrans_callback') ?>', { result_data: JSON.stringify(result) }, function(response) {
+									console.log('Response dari server:', response);
+									Swal.fire({
+										icon: 'success',
+										title: 'Pembayaran berhasil',
+										text: 'Terima kasih atas pembayaran Anda!'
+									}).then(() => {
+										location.reload(); // Refresh halaman setelah pembayaran berhasil
+									});
+								});
+							},
+							onPending: function(result) {
+								console.log('Pembayaran tertunda:', result);
+								$.post('<?= base_url('pemesanan/midtrans_callback') ?>', { result_data: JSON.stringify(result) }, function(response) {
+									console.log('Response dari server:', response);
+									Swal.fire({
+										icon: 'info',
+										title: 'Pembayaran tertunda',
+										text: 'Pembayaran Anda sedang diproses.'
+									});
+								});
+							},
+							onError: function(result) {
+								console.log('Pembayaran gagal:', result);
+								Swal.fire({
+									icon: 'error',
+									title: 'Pembayaran gagal',
+									text: 'Terjadi kesalahan dalam proses pembayaran.'
+								});
+							},
+							onClose: function() {
+								console.log('Widget Snap ditutup');
+								Swal.fire({
+									icon: 'warning',
+									title: 'Pembayaran ditutup',
+									text: 'Anda belum menyelesaikan pembayaran.'
+								});
+							}
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: data.message || 'Terjadi kesalahan saat membuat token pembayaran.'
+						});
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('Gagal memuat token pembayaran:', status, error);
+
+					try {
+						var response = JSON.parse(xhr.responseText);
+						if (xhr.status === 400 && response.error_messages && response.error_messages.includes("transaction_details.order_id Sudah Digunakan")) {
+							Swal.fire({
+								icon: 'error',
+								title: 'Order ID sudah digunakan',
+								text: 'Mohon generate ulang pembayaran'
+							});
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: 'Terjadi Kesalahan',
+								text: response.message || 'Kesalahan tidak diketahui'
+							});
+						}
+					} catch (e) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Terjadi Kesalahan',
+							text: 'Kesalahan tidak diketahui'
+						});
+					}
+				}
+			});
+		});
+
+		$.ajax({
+			url: "<?= base_url('pemesanan/api_pupuk') ?>",
+			method: 'GET',
+			dataType: 'json',
+			success: function(response) {
+				var $selectPupuk = $('#id_pupuk');
+				response.forEach(function(pupuk) {
+					var $option = $('<option>', {
+						value: pupuk.id_pupuk,
+						text: pupuk.nama_pupuk
+					});
+					$selectPupuk.append($option);
+				});
+			},
+			error: function(xhr, status, error) {
+				console.error('Gagal mengambil data pupuk:', status, error);
+			}
+		});
+
+		$.ajax({
+			url: "<?= base_url('pemesanan/api_users') ?>",
+			method: 'GET',
+			dataType: 'json',
+			success: function(response) {
+				var $selectUsers = $('#id_users');
+				response.forEach(function(users) {
+					var $option = $('<option>', {
+						value: users.id_users,
+						text: users.nama
+					});
+					$selectUsers.append($option);
+				});
+			},
+			error: function(xhr, status, error) {
+				console.error('Gagal mengambil data users:', status, error);
+			}
+		});
+	});
+</script>
+
+
+
+
 
 
 <?php $this->load->view('templates/footer') ?>

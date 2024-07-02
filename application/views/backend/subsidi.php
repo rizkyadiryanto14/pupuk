@@ -110,12 +110,11 @@
 						<input type="text" name="tempat" id="tempat" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="kode_kios">Kode kios</label>
-						<input type="text" name="kode_kios" id="kode_kios" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="nama_kios">Nama kios</label>
-						<input type="text" name="nama_kios" id="nama_kios" class="form-control">
+						<label for="id_usaha_dagang">Usaha Dagang</label>
+						<?php  ?>
+						<select name="id_usaha_dagang" id="id_usaha_dagang" class="form-control">
+							<option selected disabled>--Pilih Kios--</option>
+						</select>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -144,6 +143,27 @@
 				"targets": [0, 1, 2, 3, 4, 5, 6, 7, 8],
 				"orderable": false,
 			}],
+		});
+	});
+
+	$(document).ready(function() {
+		$.ajax({
+			url: "<?php echo base_url('subsidi/listing_usaha') ?>",
+			method: 'GET',
+			dataType: 'json',
+			success: function(response) {
+				var $selectUsers = $('#id_usaha_dagang');
+				response.forEach(function(users) {
+					var $option = $('<option>', {
+						value: users.id_usaha_dagang,
+						text: users.nama_kios
+					});
+					$selectUsers.append($option);
+				});
+			},
+			error: function(xhr, status, error) {
+				console.error('Gagal mengambil data kegiatan:', status, error);
+			}
 		});
 	});
 </script>

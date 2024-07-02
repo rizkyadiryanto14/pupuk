@@ -31,6 +31,7 @@ $route['pemesanan/api_users']			= 'Backend/Pemesanan/listing_users';
 $route['pemesanan/api_pupuk']			= 'Backend/Pemesanan/listing_pupuk';
 $route['pemesanan/get_snap_token']		= 'Backend/Pemesanan/get_snap_token';
 $route['pemesanan/update_view/(:num)']	= 'Backend/Pemesanan/update_view/$1';
+$route['pemesanan/midtrans_callback']	= 'Backend/Pemesanan/midtrans_callback';
 
 
 //pengiriman
@@ -45,6 +46,8 @@ $route['subsidi']							= 'Backend/Subsidi';
 $route['subsidi/insert']					= 'Backend/Subsidi/insert';
 $route['subsidi/get_data_subsidi']			= 'Backend/Subsidi/get_data_subsidi';
 $route['subsidi/daftar_penerima_subsidi'] 	= 'Backend/Subsidi/daftar_penerima_subsidi';
+$route['subsidi/import']					= 'Backend/Subsidi/import';
+$route['subsidi/listing_usaha']				= 'Backend/Subsidi/listing_usahadagang';
 
 $route['home/get_data_subsidi']				= 'Backend/Subsidi/get_data_subsidi';
 
@@ -55,6 +58,7 @@ $route['usaha_dagang/insert']				= 'Backend/Usaha_dagang/insert';
 $route['usaha_dagang/update_view/(:num)']	= 'Backend/Usaha_dagang/update_view/$1';
 $route['usaha_dagang/update_logic/(:num)']	= 'Backend/Usaha_dagang/update_logic/$1';
 $route['usaha_dagang/delete/(:num)']		= 'Backend/Usaha_dagang/delete/$1';
+
 
 //users
 $route['users']								= 'Backend/Users';

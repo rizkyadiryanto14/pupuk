@@ -25,6 +25,11 @@ class Subsidi_model extends CI_Model
 		return $this->db->insert('penduduk', $data);
 	}
 
+	public function listing_usahadagang()
+	{
+		return $this->db->get('usaha_dagang')->result();
+	}
+
 	public function update_subsidi($id_subsidi, $data)
 	{
 		$this->db->where('id_subsidi', $id_subsidi);

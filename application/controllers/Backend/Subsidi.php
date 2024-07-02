@@ -1,9 +1,12 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 /**
  * @property $Subsidi_model
  * @property $input
  * @property $session
+ * @property $db
  */
 
 class Subsidi extends CI_Controller
@@ -17,6 +20,7 @@ class Subsidi extends CI_Controller
 	/**
 	 * @return void
 	 */
+
 	public function index(): void
 	{
 		$data_subsidi = [
@@ -28,6 +32,7 @@ class Subsidi extends CI_Controller
 	/**
 	 * @return void
 	 */
+
 	public function daftar_penerima_subsidi():void
 	{
 		$data_penduduk['penduduk'] = $this->Subsidi_model->listing_penduduk();
@@ -37,10 +42,10 @@ class Subsidi extends CI_Controller
 	/**
 	 * @return void
 	 */
+
 	public function insert(): void
 	{
 		$post = $this->input->post();
-
 		$data_insert = $this->Subsidi_model->insert_subsidi($post);
 
 		if ($data_insert){
@@ -49,7 +54,53 @@ class Subsidi extends CI_Controller
 			$this->session->set_flashdata('gagal', 'Data penduduk gagal di tambahkan');
 		}
 		redirect(base_url('subsidi'));
+	}
 
+	public function listing_usahadagang():void
+	{
+		$data = $this->Subsidi_model->listing_usahadagang();
+		echo json_encode($data);
+	}
+
+	/**
+	 * @return void
+	 */
+
+	public function import(): void
+	{
+		try {
+			if (isset($_FILES["file_import"]["name"])) {
+				$path = $_FILES["file_import"]["tmp_name"];
+				$reader = IOFactory::createReaderForFile($path);
+				$spreadsheet = $reader->load($path);
+				$worksheet = $spreadsheet->getActiveSheet();
+
+				$highestRow = $worksheet->getHighestRow();
+				for ($row = 2; $row <= $highestRow; $row++) { // Mulai dari baris ke-2 (baris 1 adalah header)
+					$data = [
+						'nama' 				=> $worksheet->getCellByColumnAndRow(1, $row)->getValue(), // Kolom B di Excel
+						'nik' 				=> $worksheet->getCellByColumnAndRow(2, $row)->getValue(),  // Kolom C di Excel
+						'alamat' 			=> $worksheet->getCellByColumnAndRow(3, $row)->getValue(), // Kolom D di Excel
+						'tempat' 			=> $worksheet->getCellByColumnAndRow(4, $row)->getValue(),  // Kolom E di Excel
+						'tanggal_lahir' 	=> $worksheet->getCellByColumnAndRow(5, $row)->getValue(), // Kolom F di Excel
+						'id_usaha_dagang' 	=> $worksheet->getCellByColumnAndRow(6, $row)->getValue() // Kolom G di Excel
+					];
+					$this->Subsidi_model->insert_subsidi($data);
+					// Logging untuk debugging
+					log_message('debug', 'Query SQL: ' . $this->db->last_query());
+					if ($this->db->error()['code'] !== 0) {
+						log_message('error', 'Error saat insert data penduduk: ' . $this->db->error()['message']);
+					}
+				}
+				$this->session->set_flashdata('sukses', 'Data Import Berhasil');
+			} else {
+				$this->session->set_flashdata('gagal', 'Data Import Gagal: Tidak ada file yang dipilih');
+			}
+		} catch (Exception $e) {
+			$this->session->set_flashdata('gagal', 'Data Import Gagal: ' . $e->getMessage());
+			log_message('error', 'Error saat import Excel: ' . $e->getMessage());
+		}
+		redirect(base_url('subsidi'));
 	}
 
 	public function get_data_subsidi(): void

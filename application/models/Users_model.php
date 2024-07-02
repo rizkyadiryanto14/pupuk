@@ -10,6 +10,11 @@ class Users_model extends CI_Model
 		return $this->db->get('users')->result_array();
 	}
 
+	public function get_users()
+	{
+		return $this->db->get('users')->result();
+	}
+
 	public function insert_listing_users($data)
 	{
 		return $this->db->insert('users', $data);

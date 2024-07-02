@@ -27,7 +27,12 @@
 		<div class="container-fluid">
 			<div class="card">
 				<div class="card-header">
+					<?php if ($this->session->userdata('role') == 'admin') : ?>
 					<button class="btn btn-primary" data-toggle="modal" data-target="#tambahpesanan">Tambah Data</button>
+					<?php endif; ?>
+					<?php if ($this->session->userdata('role') == 'user') : ?>
+						<h3 class="card-title">Halaman Penyaluran</h3>
+					<?php endif; ?>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -38,7 +43,9 @@
 								<th>Pesanan</th>
 								<th>Status Pengiriman</th>
 								<th>Waktu</th>
+								<?php if ($this->session->userdata('role') == 'admin') :  ?>
 								<th>Action</th>
+								<?php endif; ?>
 							</tr>
 							</thead>
 						</table>

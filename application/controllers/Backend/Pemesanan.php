@@ -41,7 +41,7 @@ class Pemesanan extends CI_Controller
 	public function insert(): void
 	{
 		$data = [
-			'id_penduduk'       => $this->input->post("id_penduduk"),
+			'id_users'       	=> $this->input->post("id_users"),
 			'id_pupuk'        	=> $this->input->post("id_pupuk"),
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
@@ -58,7 +58,7 @@ class Pemesanan extends CI_Controller
 
 	public function listing_users(): void
 	{
-		$data = $this->Subsidi_model->get_subsidi();
+		$data = $this->Users_model->get_users();
 		echo json_encode($data);
 	}
 
@@ -86,7 +86,7 @@ class Pemesanan extends CI_Controller
 	public function update_pemesanan($id_pemesanan): void
 	{
 		$data = [
-			'id_penduduk'        	=> $this->input->post("id_penduduk"),
+			'id_user'        	=> $this->input->post("id_user"),
 			'id_pupuk'        	=> $this->input->post("id_pupuk"),
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
@@ -113,7 +113,13 @@ class Pemesanan extends CI_Controller
 				$sub_array[] = $row->nama_pupuk;
 				$sub_array[] = $row->jumlah;
 				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
-				$sub_array[] = '<button class="btn btn-danger btn-xs bayar-sekarang" data-id-pesanan="' . $row->id_pesanan . '">Bayar Sekarang</button>';
+				if ($row->status == 0) {
+					$sub_array[] = '<button class="btn btn-danger btn-xs bayar-sekarang" data-id-pesanan="' . $row->id_pesanan . '">Bayar Sekarang</button>';
+				} elseif ($row->status == 2) {
+					$sub_array[] = '<button class="btn btn-warning btn-xs" disabled>Menunggu Pembayaran</button>';
+				} elseif ($row->status == 1) {
+					$sub_array[] = '<button class="btn btn-success btn-xs" disabled>Pembayaran Berhasil</button>';
+				}
 				$sub_array[] = '<a href="' . site_url('pemesanan/update_view/' . $row->id_pesanan) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
                      <a href="' . site_url('pemesanan/delete/' . $row->id_pesanan) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
@@ -164,19 +170,19 @@ class Pemesanan extends CI_Controller
 
 		// Siapkan parameter transaksi Midtrans
 		$transaction_details = array(
-			'order_id' 		=> $id_pesanan,
-			'gross_amount' 	=> $pesanan['harga_pupuk'] * $pesanan['jumlah'],
+			'order_id' => $id_pesanan,
+			'gross_amount' => $pesanan['harga_pupuk'] * $pesanan['jumlah'],
 		);
 
 		$customer_details = array(
-			'first_name' 	=> $pesanan['nama'],
-			'email' 		=> 'emailcontoh@gmail.com',
-			'phone' 		=> '085333411680',
+			'first_name' => $pesanan['nama'],
+			'email' => 'emailcontoh@gmail.com',
+			'phone' => '085333411680',
 		);
 
 		$params = array(
-			'transaction_details' 	=> $transaction_details,
-			'customer_details' 		=> $customer_details,
+			'transaction_details' => $transaction_details,
+			'customer_details' => $customer_details,
 		);
 
 		try {
@@ -194,6 +200,63 @@ class Pemesanan extends CI_Controller
 				'message' => 'Terjadi kesalahan saat membuat token pembayaran: ' . $e->getMessage()
 			]);
 		}
+	}
+
+
+	public function midtrans_callback(): void {
+		// Dapatkan body dari request
+		$json_result = file_get_contents('php://input');
+		$result = json_decode($json_result);
+
+		// Verifikasi signature key dari Midtrans
+		$signature_key = hash("sha512", $result->order_id . $result->status_code . $result->gross_amount . \Midtrans\Config::$serverKey);
+
+		if ($signature_key != $result->signature_key) {
+			http_response_code(403);
+			echo "Forbidden";
+			return;
+		}
+
+		// Ambil status transaksi
+		$transaction = $result->transaction_status;
+		$order_id = $result->order_id;
+
+		// Sesuaikan logika berdasarkan status transaksi
+		switch ($transaction) {
+			case 'capture':
+				// For credit card transaction, we need to check whether transaction is challenge by FDS or not
+				if ($result->fraud_status == 'challenge') {
+					$status = 2; // Pending
+				} else {
+					$status = 1; // Success
+				}
+				break;
+
+			case 'settlement':
+				$status = 1; // Success
+				break;
+
+			case 'pending':
+				$status = 2; // Pending
+				break;
+
+			case 'deny':
+			case 'expire':
+			case 'cancel':
+				$status = 3; // Failed or Canceled
+				break;
+
+			default:
+				$status = 0; // Unknown status
+				break;
+		}
+
+		// Update status pesanan di database
+		$this->Pemesanan_model->update_status_pesanan($order_id, $status);
+
+		// Berikan respon 200 OK ke Midtrans
+		http_response_code(200);
+		echo "OK";
 	}
 
 	/**

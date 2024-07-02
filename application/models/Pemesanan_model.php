@@ -6,6 +6,14 @@
 
 class Pemesanan_model extends  CI_Model
 {
+
+	public function update_status_pesanan($order_id, $status): void
+	{
+		$this->db->where('id_pesanan', $order_id);
+		$this->db->update('pesanan', ['status' => $status]);
+	}
+
+
 	public function get_all_pemesanan()
 	{
 		return $this->db->get('pesanan')->result();
@@ -22,7 +30,7 @@ class Pemesanan_model extends  CI_Model
 		$this->db->select('*');
 		$this->db->from('pemesanan');
 		$this->db->join('pupuk', 'pemesanan.id_pupuk=pupuk.id_pupuk', 'left');
-		$this->db->join('penduduk', 'pemesanan.id_penduduk=penduduk.id_penduduk', 'left');
+		$this->db->join('users', 'pemesanan.id_users=users.id_users', 'left');
 		$this->db->get()->result();
 	}
 
@@ -30,7 +38,7 @@ class Pemesanan_model extends  CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('pesanan');
-		$this->db->join('penduduk', 'pesanan.id_penduduk=penduduk.id_penduduk', 'left');
+		$this->db->join('users', 'pesanan.id_users=users.id_users', 'left');
 		$this->db->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk');
 		$this->db->where('pesanan.id_pesanan', $id_pesanan);
 		return $this->db->get()->row_array();
@@ -65,10 +73,10 @@ class Pemesanan_model extends  CI_Model
 
 	function make_query(): void
 	{
-		$this->db->select('pesanan.*, pupuk.nama_pupuk, penduduk.nama as nama_penduduk, pupuk.harga_pupuk')
+		$this->db->select('pesanan.*, pupuk.nama_pupuk, users.nama as nama_penduduk, pupuk.harga_pupuk')
 			->from("pesanan")
 			->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk')
-			->join('penduduk', 'pesanan.id_penduduk=penduduk.id_penduduk');
+			->join('users', 'pesanan.id_users=users.id_users');
 		if (isset($_POST["search"]["value"])) {
 			$this->db->like("jumlah", $_POST["search"]["value"]);
 		}
