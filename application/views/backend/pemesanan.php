@@ -1,7 +1,5 @@
 <?php $this->load->view('templates/header') ?>
-
 <?php $this->load->view('templates/navbar') ?>
-
 <?php $this->load->view('templates/sidebar') ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -56,7 +54,7 @@
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table id="pemesanan" class="table table-striped">
+								<table id="riwayat_pemesanan" class="table table-striped">
 									<thead>
 									<tr>
 										<th>No</th>
@@ -109,9 +107,8 @@
 		</div>
 	</div>
 </div>
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -154,6 +151,22 @@
 				{ "data": 3 },
 				{ "data": 4 },
 				{ "data": 5 }
+			]
+		});
+
+		$('#riwayat_pemesanan').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<?= base_url('pemesanan/get_data_riwayat') ?>",
+				"type": "POST"
+			},
+			"columns": [
+				{ "data": 0 },
+				{ "data": 1 },
+				{ "data": 2 },
+				{ "data": 3 },
+				{ "data": 4 },
 			]
 		});
 

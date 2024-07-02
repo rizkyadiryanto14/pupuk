@@ -112,4 +112,46 @@ class Pemesanan_model extends  CI_Model
 		$this->db->from("pesanan");
 		return $this->db->count_all_results();
 	}
+
+	function make_query_riwayat(): void
+	{
+		$this->db->select('pesanan.*, pupuk.nama_pupuk, users.nama as nama_penduduk, pupuk.harga_pupuk')
+			->from("pesanan")
+			->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk')
+			->join('users', 'pesanan.id_users=users.id_users')
+			->where('pesanan.status', 1);
+		if (isset($_POST["search"]["value"])) {
+			$this->db->like("pupuk.nama_pupuk", $_POST["search"]["value"]);
+		}
+		if (isset($_POST["order"])) {
+			$this->db->order_by($_POST['order']['0']['column'], $_POST['order']['0']['dir']);
+		} else {
+			$this->db->order_by('id_pesanan', 'DESC');
+		}
+	}
+
+	public function make_datatables_riwayat() {
+		$this->make_query_riwayat();
+		if (isset($_POST["length"]) && $_POST["length"] != -1) {
+			$this->db->limit($_POST['length'], $_POST['start']);
+		}
+		$query = $this->db->get();
+		return $query->result();
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	function get_filtered_data_riwayat()
+	{
+		$this->make_query_riwayat();
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	function get_all_data_riwayat()
+	{
+		$this->db->select("*");
+		$this->db->from("pesanan");
+		return $this->db->count_all_results();
+	}
 }

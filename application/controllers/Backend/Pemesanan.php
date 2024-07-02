@@ -46,6 +46,7 @@ class Pemesanan extends CI_Controller
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
 		];
+
 		$insert_pemesanan = $this->Pemesanan_model->insert_pemesanan($data);
 
 		if($insert_pemesanan){
@@ -153,6 +154,37 @@ class Pemesanan extends CI_Controller
 	/**
 	 * @return void
 	 */
+	public function get_data_riwayat():void
+	{
+		$fetch_data = $this->Pemesanan_model->make_datatables_riwayat();
+		if (is_array($fetch_data)) {
+			$data = array();
+			$no = 1;
+			foreach ($fetch_data as $row) {
+				$sub_array = array();
+				$sub_array[] = $no++;
+				$sub_array[] = $row->nama_pupuk;
+				$sub_array[] = $row->jumlah;
+				$sub_array[] = 'Rp.' . number_format($row->harga_pupuk);
+				$sub_array[] = '<button class="btn btn-success btn-xs" disabled>Pembayaran Berhasil</button>';
+				$data[] = $sub_array;
+			}
+
+			$output = array(
+				"draw" => isset($_POST["draw"]) ? intval($_POST["draw"]) : 0, // Periksa apakah 'draw' ada
+				"recordsTotal" => $this->Pemesanan_model->get_all_data_riwayat(),
+				"recordsFiltered" => $this->Pemesanan_model->get_filtered_data_riwayat(),
+				"data" => $data
+			);
+			echo json_encode($output);
+		} else {
+			echo "Error: Fetch data is not an array.";
+		}
+	}
+
+	/**
+	 * @return void
+	 */
 	public function get_snap_token(): void
 	{
 		$id_pesanan = $this->input->post('id_pesanan');
@@ -201,7 +233,6 @@ class Pemesanan extends CI_Controller
 			]);
 		}
 	}
-
 
 	public function midtrans_callback(): void {
 		// Dapatkan body dari request

@@ -32,6 +32,7 @@ $route['pemesanan/api_pupuk']			= 'Backend/Pemesanan/listing_pupuk';
 $route['pemesanan/get_snap_token']		= 'Backend/Pemesanan/get_snap_token';
 $route['pemesanan/update_view/(:num)']	= 'Backend/Pemesanan/update_view/$1';
 $route['pemesanan/midtrans_callback']	= 'Backend/Pemesanan/midtrans_callback';
+$route['pemesanan/get_data_riwayat']	= 'Backend/Pemesanan/get_data_riwayat';
 
 
 //pengiriman
