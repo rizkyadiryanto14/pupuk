@@ -46,7 +46,9 @@
 										<th>Jenis</th>
 										<th>Harga</th>
 										<th>Status</th>
-										<th>Action</th>
+										<?php if ($this->session->userdata('role') != 'user') : ?>
+											<th>Action</th>
+										<?php endif; ?>
 									</tr>
 									</thead>
 								</table>
@@ -54,29 +56,28 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-header">
-							<h3 class="card-title">Riwayat</h3>
-						</div>
-						<div class="card-body">
-							<div class="table-responsive">
-								<table id="pupuk" class="table table-striped">
-									<thead>
-									<tr class="text-center">
-										<th>No</th>
-										<th>Nama</th>
-										<th>Jenis</th>
-										<th>Harga</th>
-										<th>Status</th>
-										<th>Action</th>
-									</tr>
-									</thead>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
+<!--				<div class="col-md-12">-->
+<!--					<div class="card">-->
+<!--						<div class="card-header">-->
+<!--							<h3 class="card-title">Riwayat</h3>-->
+<!--						</div>-->
+<!--						<div class="card-body">-->
+<!--							<div class="table-responsive">-->
+<!--								<table id="pupuk" class="table table-striped">-->
+<!--									<thead>-->
+<!--									<tr class="text-center">-->
+<!--										<th>No</th>-->
+<!--										<th>Nama</th>-->
+<!--										<th>Jenis</th>-->
+<!--										<th>Harga</th>-->
+<!--										<th>Status</th>-->
+<!--									</tr>-->
+<!--									</thead>-->
+<!--								</table>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
 			</div>
 		</div>
 	</div>

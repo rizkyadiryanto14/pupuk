@@ -1,4 +1,5 @@
 <?php
+use Midtrans\Notification;
 
 /**
  * @property $input
@@ -33,7 +34,7 @@ class Pemesanan extends CI_Controller
 	public function index(): void
 	{
 		$data_array = [
-			'data_pemesanan'  => $this->Pemesanan_model->get_all_pemesanan()
+			'pemesanan'  => $this->Pemesanan_model->get_all_pemesanan()
 		];
 		$this->load->view('backend/pemesanan', $data_array);
 	}
@@ -87,7 +88,7 @@ class Pemesanan extends CI_Controller
 	public function update_pemesanan($id_pemesanan): void
 	{
 		$data = [
-			'id_user'        	=> $this->input->post("id_user"),
+			'id_users'        	=> $this->input->post("id_users"),
 			'id_pupuk'        	=> $this->input->post("id_pupuk"),
 			'jumlah'        	=> $this->input->post("jumlah"),
 			'timestamp'        	=> date('Y-m-d H:i:s')
@@ -189,7 +190,6 @@ class Pemesanan extends CI_Controller
 	{
 		$id_pesanan = $this->input->post('id_pesanan');
 
-		// Ambil data pesanan dari model
 		$pesanan = $this->Pemesanan_model->get_by_id($id_pesanan);
 
 		if (!$pesanan) {
@@ -200,7 +200,6 @@ class Pemesanan extends CI_Controller
 			return;
 		}
 
-		// Siapkan parameter transaksi Midtrans
 		$transaction_details = array(
 			'order_id' => $id_pesanan,
 			'gross_amount' => $pesanan['harga_pupuk'] * $pesanan['jumlah'],
@@ -235,57 +234,57 @@ class Pemesanan extends CI_Controller
 	}
 
 	public function midtrans_callback(): void {
-		// Dapatkan body dari request
 		$json_result = file_get_contents('php://input');
+
 		$result = json_decode($json_result);
 
-		// Verifikasi signature key dari Midtrans
+		if (json_last_error() !== JSON_ERROR_NONE || !is_object($result)) {
+			log_message('error', "Invalid JSON response from Midtrans: " . $json_result);
+			http_response_code(400);
+			echo "Bad Request";
+			return;
+		}
+
 		$signature_key = hash("sha512", $result->order_id . $result->status_code . $result->gross_amount . \Midtrans\Config::$serverKey);
 
 		if ($signature_key != $result->signature_key) {
-			http_response_code(403);
+			log_message('error', "Invalid signature key from Midtrans");
+			http_response_code(403); // Forbidden
 			echo "Forbidden";
 			return;
 		}
 
-		// Ambil status transaksi
-		$transaction = $result->transaction_status;
 		$order_id = $result->order_id;
+		$transactionStatus = $result->transaction_status;
 
-		// Sesuaikan logika berdasarkan status transaksi
-		switch ($transaction) {
+		log_message('debug', "Order ID diterima: " . $order_id);
+		log_message('debug', "Transaction Status: " . $transactionStatus);
+
+		$status = 0; // Default status: Unknown
+		switch ($transactionStatus) {
 			case 'capture':
-				// For credit card transaction, we need to check whether transaction is challenge by FDS or not
-				if ($result->fraud_status == 'challenge') {
-					$status = 2; // Pending
-				} else {
-					$status = 1; // Success
-				}
-				break;
-
 			case 'settlement':
 				$status = 1; // Success
 				break;
-
 			case 'pending':
 				$status = 2; // Pending
 				break;
-
 			case 'deny':
 			case 'expire':
 			case 'cancel':
-				$status = 3; // Failed or Canceled
-				break;
-
-			default:
-				$status = 0; // Unknown status
+				$status = 3; // Failed
 				break;
 		}
 
-		// Update status pesanan di database
-		$this->Pemesanan_model->update_status_pesanan($order_id, $status);
+		log_message('debug', "Status yang akan disimpan: " . $status);
 
-		// Berikan respon 200 OK ke Midtrans
+		$insert = $this->Pemesanan_model->update_status_pesanan($order_id, $status);
+
+		if ($insert){
+			$this->session->set_flashdata('sukses', 'Pembayaran Berhasil');
+		}else {
+			$this->session->set_flashdata('gagal', 'Pembayaran Gagal');
+		}
 		http_response_code(200);
 		echo "OK";
 	}

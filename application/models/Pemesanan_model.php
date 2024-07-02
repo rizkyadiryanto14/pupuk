@@ -21,17 +21,13 @@ class Pemesanan_model extends  CI_Model
 
 
 
-	/**
-	 * @return void
-	 */
-
-	public function get_all_join_pemesanan(): void
+	public function get_all_join_pemesanan()
 	{
 		$this->db->select('*');
-		$this->db->from('pemesanan');
-		$this->db->join('pupuk', 'pemesanan.id_pupuk=pupuk.id_pupuk', 'left');
-		$this->db->join('users', 'pemesanan.id_users=users.id_users', 'left');
-		$this->db->get()->result();
+		$this->db->from('pesanan');
+		$this->db->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk', 'left');
+		$this->db->join('users', 'pesanan.id_users=users.id_users', 'left');
+		return $this->db->get()->result();
 	}
 
 	public function get_by_id($id_pesanan)

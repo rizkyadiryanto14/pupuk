@@ -32,8 +32,9 @@
 						<div class="card-header">
 							<h2 class="card-title">Form Update Pemesanan</h2>
 						</div>
-						<form action="<?= base_url('') ?>" method="post">
+						<form action="<?= base_url('pemesanan/update/' . $data_pemesanan['id_pesanan']) ?>" method="post">
 							<div class="card-body">
+								<?php if ($this->session->userdata('role') == 'admin') : ?>
 								<div class="form-group">
 									<label for="id_users">Users</label>
 									<select name="id_users" id="id_users" class="form-control">
@@ -43,9 +44,13 @@
 										<?php } ?>
 									</select>
 								</div>
+								<?php endif;  ?>
 								<div class="form-group">
-									<label for="id_penduduk">Pupuk</label>
-									<select name="id_penduduk" id="id_penduduk" class="form-control">
+									<label for="id_pupuk">Pupuk</label>
+									<?php if ($this->session->userdata('role') == 'user')  : ?>
+									<input type="hidden" name="id_users" id="id_users" value="<?= $this->session->userdata('id_user') ?>">
+									<?php endif; ?>
+									<select name="id_pupuk" id="id_pupuk" class="form-control">
 										<option selected disabled> Pilih Pupuk</option>
 										<?php foreach ($data_pupuk as $item) { ?>
 											<option value="<?= $item->id_pupuk ?>"><?= $item->nama_pupuk ?></option>

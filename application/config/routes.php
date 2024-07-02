@@ -6,7 +6,6 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //auth
-
 $route['login']			= 'Auth/logic_login';
 $route['registrasi']	= 'Auth/registrasi';
 $route['logout']		= 'Auth/logout';
@@ -31,16 +30,18 @@ $route['pemesanan/api_users']			= 'Backend/Pemesanan/listing_users';
 $route['pemesanan/api_pupuk']			= 'Backend/Pemesanan/listing_pupuk';
 $route['pemesanan/get_snap_token']		= 'Backend/Pemesanan/get_snap_token';
 $route['pemesanan/update_view/(:num)']	= 'Backend/Pemesanan/update_view/$1';
+$route['pemesanan/update/(:num)']		= 'Backend/Pemesanan/update_pemesanan/$1';
 $route['pemesanan/midtrans_callback']	= 'Backend/Pemesanan/midtrans_callback';
 $route['pemesanan/get_data_riwayat']	= 'Backend/Pemesanan/get_data_riwayat';
-
 
 //pengiriman
 $route['pengiriman']						= 'Backend/Pengiriman';
 $route['pengiriman/insert']					= 'Backend/Pengiriman/insert';
-$route['pengiriman/update']					= 'Backend/Pengiriman/update';
+$route['pengiriman/update/(:num)']			= 'Backend/Pengiriman/update/$1';
+$route['pengiriman/update_view/(:num)']		= 'Backend/Pengiriman/update_view/$1';
 $route['pengiriman/delete/(:num)']			= 'Backend/Pengiriman/delete/$1';
 $route['pengiriman/get_data_pengiriman'] 	= 'Backend/Pengiriman/get_data_pengiriman';
+$route['pengiriman/listing_pesanan']		= 'Backend/Pengiriman/listing_pesanan';
 
 //subsidi
 $route['subsidi']							= 'Backend/Subsidi';
@@ -51,7 +52,6 @@ $route['subsidi/import']					= 'Backend/Subsidi/import';
 $route['subsidi/listing_usaha']				= 'Backend/Subsidi/listing_usahadagang';
 
 $route['home/get_data_subsidi']				= 'Backend/Subsidi/get_data_subsidi';
-
 
 $route['usaha_dagang']						= 'Backend/Usaha_dagang';
 $route['usaha_dagang/get_data_usahadagang'] = 'Backend/Usaha_dagang/get_data_usahadagang';
@@ -68,3 +68,7 @@ $route['users/update_view/(:num)']			= 'Backend/Users/update_view/$1';
 $route['users/update_logic/(:num)']			= 'Backend/Users/update_logic/$1';
 $route['users/delete/(:num)']				= 'Backend/Users/delete/$1';
 $route['users/ceknik']						= 'Backend/Users/ceknik';
+
+
+
+$route['laporan']							= 'Backend/Laporan';

@@ -64,35 +64,34 @@
 					<h3 class="">Form Tambah Pengiriman</h3>
 				</div>
 			</div>
-			<div class="modal-body">
-				<div class="form-group">
-					<label for="id_pesanan">Pesanan</label>
-					<select name="id_pesanan" id="id_pesanan" class="form-control">
-						<option selected disabled>Pilih Pesanan</option>
-						<?php foreach ($pemesanan as $item) { ?>
-							<option value="<?= $item->id_pesanan ?>"><?= $item->id_penduduk ?></option>
-						<?php } ?>
-					</select>
+			<form action="<?= base_url('pengiriman/insert') ?>" method="post">
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="id_pesanan">Pesanan</label>
+						<select name="id_pesanan" id="id_pesanan" class="form-control" required>
+							<option selected disabled>Pilih Pesanan</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="status_pengiriman">Status Pengiriman</label>
+						<select name="status_pengiriman" id="status_pengiriman" class="form-control" required>
+							<option selected disabled>Pilih Status</option>
+							<option value="Diproses">Diproses</option>
+							<option value="Menunggu Dikirim">Menunggu Dikirim</option>
+							<option value="Sudah Dikirim">Sudah Dikirim</option>
+							<option value="Sudah Diterima">Sudah Diterima</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="timestamp">Waktu</label>
+						<input type="datetime-local" name="timestamp" id="timestamp" class="form-control" required>
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="status_pengiriman">Status Pengiriman</label>
-					<select name="status_pengiriman" id="status_pengiriman" class="form-control">
-						<option selected disabled>Pilih Status</option>
-						<option value="diproses">Diproses</option>
-						<option value="menunggu">Menunggu Dikirim</option>
-						<option value="sudah">Sudah Dikirim</option>
-						<option value="terima">Sudah Diterima</option>
-					</select>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button class="btn btn-primary" type="submit">Simpan</button>
 				</div>
-				<div class="form-group">
-					<label for="timestamp">Waktu</label>
-					<input type="datetime-local" name="timestamp" id="timestamp" class="form-control">
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button class="btn btn-primary" type="submit">Simpan</button>
-			</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -116,6 +115,25 @@
 				"orderable": false,
 			}],
 		});
+	});
+
+	$.ajax({
+		url: "<?= base_url('pengiriman/listing_pesanan') ?>",
+		method: 'GET',
+		dataType: 'json',
+		success: function(response) {
+			var $selectPupuk = $('#id_pesanan');
+			response.forEach(function(pesanan) {
+				var $option = $('<option>', {
+					value: pesanan.id_pesanan,
+					text: 'Jumlah ' +  pesanan.jumlah + ' | ' +  pesanan.nama_pupuk
+				});
+				$selectPupuk.append($option);
+			});
+		},
+		error: function(xhr, status, error) {
+			console.error('Gagal mengambil data pupuk:', status, error);
+		}
 	});
 </script>
 

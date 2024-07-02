@@ -23,9 +23,19 @@ class Pengiriman extends  CI_Controller
 	public function index(): void
 	{
 		$data = [
-			'pemesanan'		=> $this->Pemesanan_model->get_all_pemesanan(),
+			'pemesanan'		=> $this->Pemesanan_model->get_all_join_pemesanan(),
 		];
 		$this->load->view('backend/pengiriman', $data);
+	}
+
+	/**
+	 * @return void
+	 */
+
+	public function listing_pesanan():void
+	{
+		$data = $this->Pemesanan_model->get_all_join_pemesanan();
+		echo json_encode($data);
 	}
 
 	/**
@@ -46,6 +56,23 @@ class Pengiriman extends  CI_Controller
 		redirect(base_url('pengiriman'));
 	}
 
+
+	/**
+	 * @param $id_pengiriman
+	 * @return void
+	 */
+	public function delete($id_pengiriman):void
+	{
+		$delete = $this->Pengiriman_model->delete_pengiriman($id_pengiriman);
+
+		if ($delete){
+			$this->session->set_flashdata('sukses','Data Pengiriman berhasil dihapus');
+		}else {
+			$this->session->set_flashdata('gagal', 'Data Pengiriman gagal dihapus');
+		}
+		redirect(base_url('pengiriman'));
+	}
+
 	/**
 	 * fungsi detail pengiriman berdasarkan ID
 	 * @param $id_pengiriman
@@ -61,12 +88,33 @@ class Pengiriman extends  CI_Controller
 	}
 
 	/**
+	 * @param $id_pengiriman
 	 * @return void
 	 */
+	public function update_view($id_pengiriman):void
+	{
+		$data_array = [
+			'data_pengiriman'	=> $this->Pengiriman_model->get_id_join_pengiriman($id_pengiriman)
+		];
+		$this->load->view('backend/update_pengiriman', $data_array);
+	}
 
-	public function update_pengiriman(): void
+
+	/**
+	 * @param $id_pengiriman
+	 * @return void
+	 */
+	public function update($id_pengiriman):void
 	{
 		$post = $this->input->post();
+		$insert_pengiriman = $this->Pengiriman_model->update_pengiriman($id_pengiriman,$post);
+
+		if ($insert_pengiriman){
+			$this->session->set_flashdata('sukses', 'Data Pengiriman Berhasil Diupdate');
+		}else{
+			$this->session->set_flashdata('gagal','Data Pengiriman Gagal Diupdate');
+		}
+		redirect(base_url('pengiriman'));
 	}
 
 	public function get_data_pengiriman(): void
@@ -81,8 +129,8 @@ class Pengiriman extends  CI_Controller
 				$sub_array[] = $row->nama_pupuk;
 				$sub_array[] = $row->status_pengiriman;
 				$sub_array[] = $row->timestamp;
-				$sub_array[] = '<a href="' . site_url('belanja/update_view/' . $row->id_pengiriman) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
-                     <a href="' . site_url('Belanja/delete/' . $row->id_pengiriman) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
+				$sub_array[] = '<a href="' . site_url('pengiriman/update_view/' . $row->id_pengiriman) . '" class="btn btn-info btn-xs update"><i class="fa fa-edit"></i></a>
+                     <a href="' . site_url('pengiriman/delete/' . $row->id_pengiriman) . '" onclick="return confirm(\'Apakah anda yakin?\')" class="btn btn-danger btn-xs delete"><i class="fa fa-trash"></i></a>';
 				$data[] = $sub_array;
 			}
 			$output = array(

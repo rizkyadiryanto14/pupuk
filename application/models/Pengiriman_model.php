@@ -21,9 +21,19 @@ class Pengiriman_model extends CI_Model
 		return $this->db->get_where('pengiriman',array('id_pengiriman' => $id_pegiriman))->row_array();
 	}
 
+	public function get_id_join_pengiriman($id_pengiriman)
+	{
+		$this->db->select('*');
+		$this->db->from('pengiriman');
+		$this->db->join('pesanan', 'pengiriman.id_pesanan=pesanan.id_pesanan');
+		$this->db->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk');
+		$this->db->where('pengiriman.id_pengiriman', $id_pengiriman);
+		return $this->db->get()->row_array();
+	}
+
 	public function update_pengiriman($id_pengiriman, $data)
 	{
-		$this->db->update('id_pengiriman', $id_pengiriman);
+		$this->db->where('id_pengiriman', $id_pengiriman);
 		return $this->db->update('pengiriman', $data);
 	}
 
@@ -37,7 +47,7 @@ class Pengiriman_model extends CI_Model
 	{
 		$this->db->select('pengiriman.*, pupuk.nama_pupuk')
 			->from("pengiriman")
-			->join('pesanan', 'pengiriman.id_pengiriman=pesanan.id_pesanan')
+			->join('pesanan', 'pengiriman.id_pesanan=pesanan.id_pesanan')
 			->join('pupuk', 'pesanan.id_pupuk=pupuk.id_pupuk');
 		if (isset($_POST["search"]["value"])) {
 			$this->db->like("status_pengiriman", $_POST["search"]["value"]);

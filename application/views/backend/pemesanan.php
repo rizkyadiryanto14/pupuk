@@ -93,10 +93,13 @@
 					<?php endif;  ?>
 					<div class="form-group">
 						<label for="id_pupuk">Pupuk</label>
-						<input type="hidden" name="id_users" id="id_users" value="<?= $this->session->userdata('id_user') ?>">
+						<?php if ($this->session->userdata('role') == 'user')  : ?>
+							<input type="hidden" name="id_users" id="id_users" value="<?= $this->session->userdata('id_user') ?>">
+						<?php endif; ?>
 						<select name="id_pupuk" id="id_pupuk" class="form-control">
 							<option selected disabled>-- Pilih Pupuk --</option>
-						</select>					</div>
+						</select>
+					</div>
 					<div class="form-group">
 						<label for="jumlah">Jumlah</label>
 						<input type="number" name="jumlah" class="form-control" id="jumlah" required>
